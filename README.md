@@ -1,2 +1,2 @@
-# udger-local-api-v4
-REST API agent string parser for Docker based on Udger https://udger.com/products/local_parser
+# Udger-local-api-v4
+User Agent parser (User-Agent Client Hints support) microservice with REST API intended to be run in Docker.
