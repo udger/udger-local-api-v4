@@ -1,0 +1,264 @@
+XFORMAT: 1A
+HOST: http://udger-webservice.org/
+
+# udger-local-api-v4
+
+Udger-webservice REST-API provides access to [udger-webservice](https://github.com/udger/udger-local-api-v4) docker container.
+
+# API Versions and changes
+
+## 0.1
+
+* First version available.
+
+
+# Group parse
+
+## User Agent Parser [/parse/ua/{ua}]
+
+Parse single user agent string.
+
++ Parameters
+
+    + ua: Mozilla%2F5.0+%28Windows+NT+10.0%3B+WOW64%3B+rv%3A40.0%29+Gecko%2F20100101+Firefox%2F40.0 (string) - base64 encoded user agent string
+
+### GET
+
+Get parsed user agent.
+
++ Response 200 (application/json)
+
+    + Attributes (UaResult)
+
++ Response 400 (application/text)
+    
+## User Agent Parser [/parse/ua-v4]
+
+Parse udger-v4 request.
+
++ Parameters
+
+    +
+
+### POST
+
+Get parsed user agent.
+
++ Response 200 (application/json)
+
+    + Attributes (UaResult)
+
++ Response 400 (application/text)
+
+## IP Parser [/parse/ip/{ip}]
+
+Parse single IP string.
+
++ Parameters
+
+    + ip: 108.61.199.93 (string) - IP string
+
+### GET
+
+Get parsed IP.
+
++ Response 200 (application/json)
+
+    + Attributes (IpResult)
+
++ Response 400 (application/text)
+
+    
+## UA + IP Parser [/parse/ua={ua}&ip={ip}]
+
+Parse single user agent string.
+
++ Request
+
+    + ua: Mozilla%2F5.0+%28Windows+NT+10.0%3B+WOW64%3B+rv%3A40.0%29+Gecko%2F20100101+Firefox%2F40.0 (string) - base64 encoded user agent string
+    + ip: 108.61.199.93 (string) - IP string
+
++ Response 200 (application/json)
+
+        {
+            "user_agent": { (UaResult) },
+            "ip_address": { (IpResult) }
+        }
+        
++ Response 400
+
+
+# Group set
+
+Handles database file downloading / updating.
+
+## Client key [/set/key{?access_key}]
+
+Set client key used in db update operation.
+
++ Parameters
+
+    + access_key: XYZ (string) - client key
+
+### POST
+
+Set client key
+
++ Response 200 (application/text)
+
+        OK
+
++ Response 400 (application/text)
+
+Invalid key
+
+## Database download [/set/updatedata]
+
+Update database file from `http://data.udger.com/{key}/udgerdb_v3.dat.gz`
+
+### POST
+
+Update database file
+
++ Response 200 (application/text)
+
+        OK
+        
++ Response 400 (application/text)
+
+## Daily update [/set/autoupdate{?time}]
+
+Set time of daily autoupdate in form HH:mm
+
++ Parameters
+
+    + time:  10:30 (string) - set time of periodic update in form HH:mm
+
+### POST
+
+Set time of daily autoupdate
+
++ Response 200 (application/text)
+
+        OK
+        
++ Response 400 (application/text)
+
+## Database upload [/set/datafile]
+
+Upload data file. Accepts data in gz format.
+
+### POST
+
++ Parameters
+
+    + file (file, required) - {FILE} File to upload.
+
++ Request (multipart/form-data)
+
+        
+# Group statistic
+
+## Parser statistics [/statistic]
+
+Gets parser statistics.
+
+### GET
+
++ Response 200 (application/json)
+
+        {
+            "total_requests_ua": 989293,
+            "total_requests_ip": 271799,
+            "total_nanos_ua": 394022541322,
+            "total_nanos_ip": 367258877296,
+            "avg_throughput_ua": 2702.53,
+            "avg_throughput_ip": 791.89
+        }
+
+
+# Data Structures
+
+## UaResult (object)
+
+- user_agent: (string)
+- ua_string: Mozilla/5.0 compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0 (string)
+- ua_class: Browser (string)
+- ua_class_code: browser (string)
+- ua: IE 10.0 (string)
+- ua_version: 10.0 (string)
+- ua_version_major: 10 (string)
+- ua_uptodate_current_version: 11 (string)
+- ua_family: IE (string)
+- ua_family_code: ie (string)
+- ua_family_homepage: https://en.wikipedia.org/wiki/Internet_Explorer (string)
+- ua_family_vendor: Microsoft Corporation. (string)
+- ua_family_vendor_code: microsoft_corporation (string)
+- ua_family_vendor_homepage: https://www.microsoft.com/about/ (string)
+- ua_family_icon: msie.png (string)
+- ua_family_icon_big: msie_big.png (string)
+- ua_family_info_url: https://udger.com/resources/ua-list/browser-detail?browser=IE (string)
+- ua_engine: Trident (string)
+- os: Windows 7 (string)
+- os_code: windows_7 (string)
+- os_homepage: https://en.wikipedia.org/wiki/Windows_7 (string)
+- os_icon: windows-7.png (string)
+- os_icon_big: windows-7_big.png (string)
+- os_info_url: https://udger.com/resources/ua-list/os-detail?os=Windows 7 (string)
+- os_family: Windows (string)
+- os_family_code: windows (string)
+- os_family_vendor: Microsoft Corporation. (string)
+- os_family_vendor_code: microsoft_corporation (string)
+- os_family_vendor_homepage: https://www.microsoft.com/about/ (string)
+- device_class: Desktop (string)
+- device_class_code: desktop (string)
+- device_class_icon: desktop.png (string)
+- device_class_icon_big: desktop_big.png (string)
+- device_class_info_url: https://udger.com/resources/ua-list/device-detail?device=Desktop (string)
+- device_brand:  (string)
+- device_brand_code:  (string)
+- device_brand_homepage:  (string)
+- device_brand_icon:  (string)
+- device_brand_icon_big:  (string)
+- device_brand_info_url:  (string)
+- crawler_last_seen:  (string)
+- crawler_category:  (string)
+- crawler_category_code:  (string)
+- crawler_respect_robotstxt:  (string)
+- sec_ch_ua:  (string)
+- sec_ch_ua_full_version_list:  (string)
+- sec_ch_ua_mobile:  (string)
+- sec_ch_ua_full_version:  (string)
+- sec_ch_ua_platform:  (string)
+- sec_ch_ua_platform_version:  (string)
+- sec_ch_ua_model:  (string)
+
+## IpResult (object)
+
+- ip: 66.249.64.1 (string)
+- ip_ver: 4 (number)
+- ip_classification: Crawler (string)
+- ip_classification_code: crawler (string)
+- ip_hostname: crawl-66-249-64-1.googlebot.com (string)
+- ip_last_seen: 2016-01-12 08:31:41 (string)
+- ip_country: United States (string)
+- ip_country_code: US (string)
+- ip_city: Mountain View (string)
+- crawler_name: Googlebot/2.1 (string)
+- crawler_ver: 2.1 (string)
+- crawler_ver_major: 2 (string)
+- crawler_family: Googlebot (string)
+- crawler_family_code: googlebot (string)
+- crawler_family_homepage: http://www.google.com/bot.html (string)
+- crawler_family_vendor: Google Inc. (string)
+- crawler_family_vendor_code: google_inc (string)
+- crawler_family_vendor_homepage: https://www.google.com/about/company/ (string)
+- crawler_family_icon: bot_googlebot.png (string)
+- crawler_family_info_url: https://udger.com/resources/ua-list/bot-detail?bot=Googlebot (string)
+- crawler_last_seen: 2016-03-14 07:40:11 (string)
+- crawler_category: Search engine bot (string)
+- crawler_category_code: search_engine_bot (string)
+- crawler_respect_robotstxt: yes (string)
+- datacenter_name: (string)
+- datacenter_name_code: (string)
+- datacenter_homepage: (string)
