@@ -227,7 +227,7 @@ public class ParseResource {
 
             uaResult = parserService.parseUa(ua, udgerRequest);
 
-            jsonBuilder.add("ua_string", ua)
+            jsonBuilder.add("ua_string", ua != null ? ua : "")
                     .add("ua_class", uaResult.getUaClass())
                     .add("ua_class_code",uaResult.getUaClassCode())
                     .add("ua", uaResult.getUa())
@@ -272,13 +272,13 @@ public class ParseResource {
                     .add("crawler_category", uaResult.getCrawlerCategory())
                     .add("crawler_category_code", uaResult.getCrawlerCategoryCode())
                     .add("crawler_respect_robotstxt", uaResult.getCrawlerRespectRobotstxt())
-                    .add("sec_ch_ua", uaResult.getSecChUa())
-                    .add("sec_ch_ua_full_version_list", uaResult.getSecChUaFullVersionList())
-                    .add("sec_ch_ua_mobile", uaResult.getSecChUaMobile())
-                    .add("sec_ch_ua_full_version", uaResult.getSecChUaFullVersion())
-                    .add("sec_ch_ua_platform", uaResult.getSecChUaPlatform())
-                    .add("sec_ch_ua_platform_version", uaResult.getSecChUaPlatformVersion())
-                    .add("sec_ch_ua_model", uaResult.getSecChUaModel())
+                    .add("sec_ch_ua", uaResult.getSecChUa() != null ? uaResult.getSecChUa() : "")
+                    .add("sec_ch_ua_full_version_list", uaResult.getSecChUaFullVersionList() != null ? uaResult.getSecChUaFullVersionList() : "")
+                    .add("sec_ch_ua_mobile", uaResult.getSecChUaMobile() != null ? uaResult.getSecChUaMobile() : "")
+                    .add("sec_ch_ua_full_version", uaResult.getSecChUaFullVersion() != null ? uaResult.getSecChUaFullVersion() : "")
+                    .add("sec_ch_ua_platform", uaResult.getSecChUaPlatform() != null ? uaResult.getSecChUaPlatform() : "")
+                    .add("sec_ch_ua_platform_version", uaResult.getSecChUaPlatformVersion() != null ? uaResult.getSecChUaPlatformVersion() : "")
+                    .add("sec_ch_ua_model", uaResult.getSecChUaModel() != null ? uaResult.getSecChUaModel() : "")
             ;
 
             return jsonBuilder;

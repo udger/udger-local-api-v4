@@ -41,6 +41,19 @@ Udger-local-api-v4 can be parameterized using following java properties:
 ```
     wget http://localhost:8080/udger-local-api-v4/parse/ua/Mozilla%2F5.0+%28Windows+NT+10.0%3B+WOW64%3B+rv%3A40.0%29+Gecko%2F20100101+Firefox%2F40.0
 ```
+* `parse/us-v4`
+```
+curl -X POST -H "Content-Type: application/xml" -d '<parseUaV4Request>
+  <uaString></uaString>
+  <secChUa>" Not;A Brand";v="99", "Google Chrome";v="97", "Chromium";v="97"</secChUa>
+  <secChUaFullVersionList></secChUaFullVersionList>
+  <secChUaMobile>?0</secChUaMobile>
+  <secChUaFullVersion>"97.0.4692.71"</secChUaFullVersion>
+  <secChUaPlatform></secChUaPlatform>
+  <secChUaPlatformVersion></secChUaPlatformVersion>
+  <secChUaModel></secChUaModel>
+</parseUaV4Request>' http://localhost:8080/udger-local-api-v4/parse/ua-v4
+```
 * `parse/ip`
 ```
     wget http://localhost:8080/udger-local-api-v4/parse/ip/12.118.188.126
