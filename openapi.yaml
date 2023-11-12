@@ -1,0 +1,437 @@
+openapi: 3.0.0
+info:
+  title: Udger Local API v4
+  description: Udger-webservice REST-API provides access to udger-webservice docker container.
+  version: '1'
+
+servers:
+  - url: http://udger-webservice.org/
+
+paths:
+  /parse/ua/{ua}:
+    get:
+      summary: Parse single user agent string.
+      parameters:
+        - name: ua
+          in: path
+          required: true
+          description: Base64 encoded user agent string
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Parsed user agent.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UaResult'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/UaResult'
+        '400':
+          description: Invalid request.
+          content:
+            application/text:
+              schema:
+                type: string
+
+  /parse/ua-v4:
+    post:
+      summary: Parse udger-v4 request.
+      requestBody:
+        description: User Agent information to be parsed
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParseUaV4Request'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ParseUaV4Request'
+      responses:
+        '200':
+          description: Parsed user agent.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UaResult'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/UaResult'
+        '400':
+          description: Invalid request.
+          content:
+            application/text:
+              schema:
+                type: string
+
+  /parse/ip/{ip}:
+    get:
+      summary: Parse single IP string.
+      parameters:
+        - name: ip
+          in: path
+          required: true
+          description: IP string
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Parsed IP.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IpResult'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/IpResult'
+        '400':
+          description: Invalid request.
+          content:
+            application/text:
+              schema:
+                type: string
+
+  /parse:
+    get:
+      summary: Parse single user agent string.
+      parameters:
+        - name: ua
+          in: query
+          required: true
+          description: Base64 encoded user agent string
+          schema:
+            type: string
+        - name: ip
+          in: query
+          required: true
+          description: IP string
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Parsed user agent and IP.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user_agent:
+                    $ref: '#/components/schemas/UaResult'
+                  ip_address:
+                    $ref: '#/components/schemas/IpResult'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  user_agent:
+                    $ref: '#/components/schemas/UaResult'
+                  ip_address:
+                    $ref: '#/components/schemas/IpResult'
+        '400':
+          description: Invalid request.
+          content:
+            application/text:
+              schema:
+                type: string
+
+  /set/key:
+    post:
+      summary: Set client key used in db update operation.
+      parameters:
+        - name: access_key
+          in: query
+          required: true
+          description: Client key
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/text:
+              schema:
+                type: string
+        '400':
+          description: Invalid key.
+          content:
+            application/text:
+              schema:
+                type: string
+
+  /set/updatedata:
+    post:
+      summary: Update database file from http://data.udger.com/{key}/udgerdb_v3.dat.gz
+      responses:
+        '200':
+          description: OK
+          content:
+            application/text:
+              schema:
+                type: string
+        '400':
+          description: Invalid request.
+          content:
+            application/text:
+              schema:
+                type: string
+
+  /set/autoupdate:
+    post:
+      summary: Set time of daily autoupdate in form HH:mm.
+      parameters:
+        - name: time
+          in: query
+          required: true
+          description: Set time of periodic update in form HH:mm
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/text:
+              schema:
+                type: string
+        '400':
+          description: Invalid request.
+          content:
+            application/text:
+              schema:
+                type: string
+
+  /set/datafile:
+    post:
+      summary: Upload data file. Accepts data in gz format.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: OK
+          content:
+            application/text:
+              schema:
+                type: string
+        '400':
+          description: Invalid request.
+          content:
+            application/text:
+              schema:
+                type: string
+
+  /statistic:
+    get:
+      summary: Get parser statistics.
+      responses:
+        '200':
+          description: Parser statistics.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_requests_ua:
+                    type: integer
+                  total_requests_ip:
+                    type: integer
+                  total_nanos_ua:
+                    type: integer
+                  total_nanos_ip:
+                    type: integer
+                  avg_throughput_ua:
+                    type: number
+                  avg_throughput_ip:
+                    type: number
+
+components:
+  schemas:
+    UaResult:
+      type: object
+      properties:
+        user_agent:
+          type: string
+        ua_string:
+          type: string
+        ua_class:
+          type: string
+        ua_class_code:
+          type: string
+        ua:
+          type: string
+        ua_version:
+          type: string
+        ua_version_major:
+          type: string
+        ua_uptodate_current_version:
+          type: string
+        ua_family:
+          type: string
+        ua_family_code:
+          type: string
+        ua_family_homepage:
+          type: string
+        ua_family_vendor:
+          type: string
+        ua_family_vendor_code:
+          type: string
+        ua_family_vendor_homepage:
+          type: string
+        ua_family_icon:
+          type: string
+        ua_family_icon_big:
+          type: string
+        ua_family_info_url:
+          type: string
+        ua_engine:
+          type: string
+        os:
+          type: string
+        os_code:
+          type: string
+        os_homepage:
+          type: string
+        os_icon:
+          type: string
+        os_icon_big:
+          type: string
+        os_info_url:
+          type: string
+        os_family:
+          type: string
+        os_family_code:
+          type: string
+        os_family_vendor:
+          type: string
+        os_family_vendor_code:
+          type: string
+        os_family_vendor_homepage:
+          type: string
+        device_class:
+          type: string
+        device_class_code:
+          type: string
+        device_class_icon:
+          type: string
+        device_class_icon_big:
+          type: string
+        device_class_info_url:
+          type: string
+        device_brand:
+          type: string
+        device_brand_code:
+          type: string
+        device_brand_homepage:
+          type: string
+        device_brand_icon:
+          type: string
+        device_brand_icon_big:
+          type: string
+        device_brand_info_url:
+          type: string
+        crawler_last_seen:
+          type: string
+        crawler_category:
+          type: string
+        crawler_category_code:
+          type: string
+        crawler_respect_robotstxt:
+          type: string
+        sec_ch_ua:
+          type: string
+        sec_ch_ua_full_version_list:
+          type: string
+        sec_ch_ua_mobile:
+          type: string
+        sec_ch_ua_full_version:
+          type: string
+        sec_ch_ua_platform:
+          type: string
+        sec_ch_ua_platform_version:
+          type: string
+        sec_ch_ua_model:
+          type: string
+
+    IpResult:
+      type: object
+      properties:
+        ip:
+          type: string
+        ip_ver:
+          type: number
+        ip_classification:
+          type: string
+        ip_classification_code:
+          type: string
+        ip_hostname:
+          type: string
+        ip_last_seen:
+          type: string
+        ip_country:
+          type: string
+        ip_country_code:
+          type: string
+        ip_city:
+          type: string
+        crawler_name:
+          type: string
+        crawler_ver:
+          type: string
+        crawler_ver_major:
+          type: string
+        crawler_family:
+          type: string
+        crawler_family_code:
+          type: string
+        crawler_family_homepage:
+          type: string
+        crawler_family_vendor:
+          type: string
+        crawler_family_vendor_code:
+          type: string
+        crawler_family_vendor_homepage:
+          type: string
+        crawler_family_icon:
+          type: string
+        crawler_family_info_url:
+          type: string
+        crawler_last_seen:
+          type: string
+        crawler_category:
+          type: string
+        crawler_category_code:
+          type: string
+        crawler_respect_robotstxt:
+          type: string
+        datacenter_name:
+          type: string
+        datacenter_name_code:
+          type: string
+        datacenter_homepage:
+          type: string
+
+    ParseUaV4Request:
+      type: object
+      properties:
+        uaString:
+          type: string
+        secChUa:
+          type: string
+        secChUaFullVersionList:
+          type: string
+        secChUaMobile:
+          type: string
+        secChUaFullVersion:
+          type: string
+        secChUaPlatform:
+          type: string
+        secChUaPlatformVersion:
+          type: string
+        secChUaModel:
+          type: string
