@@ -21,6 +21,6 @@ EXPOSE 8080
 FROM common as prod
 
 COPY ./udgerdb_v4.dat /udgerdb/udger_v4.dat
-ENV JAVA_OPTS="-Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true
+ENV JAVA_OPTS="-Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true"
 ENTRYPOINT java ${JAVA_OPTS} -jar ${MEECROWAVE_ARCHIVE}.jar --webapp udger-local-api-v4.war --context udger-local-api-v4
 EXPOSE 8080
