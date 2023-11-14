@@ -36,7 +36,7 @@ public class DbFileManager {
 
     private static final Logger LOG =  Logger.getLogger(DbFileManager.class.getName());
 
-    private static final String DEFAULT_FILE_NAME = "/udgerdb/udgerdb_v3.dat";
+    private static final String DEFAULT_FILE_NAME = "/udgerdb/udgerdb_v4.dat";
     private static final String DOWNLOAD_URL = "http://data.udger.com/";
 
     private volatile String dbFileName;
@@ -96,7 +96,7 @@ public class DbFileManager {
             URL website;
             String newDbFileName = getNewDbFileName();
             try {
-                website = new URL(DOWNLOAD_URL + getClientKey() + "/udgerdb_v3.dat.gz");
+                website = new URL(DOWNLOAD_URL + getClientKey() + "/udgerdb_v4.dat.gz");
             } catch (MalformedURLException e) {
                 throw new UdgerException(e.getMessage());
             }
